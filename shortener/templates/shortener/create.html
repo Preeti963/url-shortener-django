@@ -1,0 +1,9 @@
+<h2>Create Short URL</h2>
+
+<form method="post">
+    {% csrf_token%}
+    <input type="url" name="original_url" placeholder="Enter long URL" required>
+    <button type="submit">Shorten</button>
+</form>
+
+<a herf="{% url 'dashboard' %}">Black</a>

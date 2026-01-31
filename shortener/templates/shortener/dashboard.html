@@ -1,0 +1,27 @@
+<h2>My URLs</h2>
+
+<a herf="{% url 'create' %}">Create New</a>|
+<a herf="{% url 'logout' %}">Logout</a>
+
+<table border="1">
+    <tr>
+        <th>Short URL</th>
+        <th>Clicks</th>
+        <th>Actions</th>
+
+    </tr>
+    {% for url in urls %}
+   <tr>
+  <td>{{ request.get_host }}/{{ url.short_code }}</td>
+  <td>{{ url.click_count }}</td>
+  <td>
+    <a href="{% url 'edit' url.id %}">Edit</a> |
+    <a href="{% url 'delete' url.id %}">Delete</a>
+  </td>
+</tr>
+
+    {% empty %}
+    <tr><td colspan="2">No URLS yet</td></tr>
+    {% endfor %}
+    
+</table>

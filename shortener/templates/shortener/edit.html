@@ -1,0 +1,9 @@
+<h2>Edit URL</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="url" name="original_url" value="{{ url.original_url }}" required>
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'dashboard' %}">Back</a>
