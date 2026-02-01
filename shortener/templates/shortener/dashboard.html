@@ -1,27 +1,46 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
 <h2>My URLs</h2>
 
-<a herf="{% url 'create' %}">Create New</a>|
-<a herf="{% url 'logout' %}">Logout</a>
-
-<table border="1">
+<table>
     <tr>
         <th>Short URL</th>
         <th>Clicks</th>
+        <th>QR Code</th>
         <th>Actions</th>
-
     </tr>
-    {% for url in urls %}
-   <tr>
-  <td>{{ request.get_host }}/{{ url.short_code }}</td>
-  <td>{{ url.click_count }}</td>
-  <td>
-    <a href="{% url 'edit' url.id %}">Edit</a> |
-    <a href="{% url 'delete' url.id %}">Delete</a>
-  </td>
-</tr>
 
+    {% for url in urls %}
+    <tr>
+        <td>
+            <a href="/{{ url.short_code }}" target="_blank">
+                {{ request.get_host }}/{{ url.short_code }}
+            </a>
+        </td>
+        <td>{{ url.click_count }}</td>
+        <td>
+            {% if url.qr_code %}
+                <a href="/{{ url.short_code }}" target="_blank">
+                    <img src="{{ url.qr_code.url }}" width="80" alt="QR code">
+                </a>
+                <br>
+                <a href="{{ url.qr_code.url }}" download="QR_{{ url.short_code }}.png">Download QR</a>
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'edit' url.id %}">Edit</a> |
+            <a href="{% url 'delete' url.id %}">Delete</a>
+        </td>
+    </tr>
     {% empty %}
-    <tr><td colspan="2">No URLS yet</td></tr>
+    <tr>
+        <td colspan="4">No URLs yet</td>
+    </tr>
     {% endfor %}
-    
 </table>
+{% endblock %}

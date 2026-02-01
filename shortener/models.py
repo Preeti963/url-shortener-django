@@ -1,16 +1,21 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
 
 class ShortURL(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     original_url = models.URLField()
-    short_code = models.CharField(max_length=10, unique=True)
+    short_code = models.CharField(max_length=20, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    click_count = models.IntegerField(default=0)
+    click_count = models.PositiveIntegerField(default=0)
     expires_at = models.DateTimeField(null=True, blank=True)
+    qr_code = models.ImageField(upload_to='qr/', null=True, blank=True)  # QR code field
+
 
     def __str__(self):
         return self.short_code
-    
+
+    # Optional: get full short URL
+    def get_short_url(self, request=None):
+        if request:
+            return request.build_absolute_uri(f'/{self.short_code}')
+        return f'/{self.short_code}'
